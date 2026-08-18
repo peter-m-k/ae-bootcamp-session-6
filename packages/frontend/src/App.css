@@ -334,6 +334,14 @@ p {
   color: var(--success-color);
 }
 
+.todo-card.overdue {
+  border-color: var(--danger-color);
+}
+
+.todo-card.overdue .todo-title {
+  color: var(--danger-color);
+}
+
 .todo-checkbox {
   width: 20px;
   height: 20px;

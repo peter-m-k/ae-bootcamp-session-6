@@ -99,4 +99,68 @@ describe('TodoCard Component', () => {
     
     expect(screen.queryByText(/Due:/)).not.toBeInTheDocument();
   });
+
+  describe('overdue indicator', () => {
+    const toISODate = (date) => date.toISOString().slice(0, 10);
+    const daysFromNow = (offset) => {
+      const date = new Date();
+      date.setDate(date.getDate() + offset);
+      return toISODate(date);
+    };
+
+    it('should apply overdue class when due date is in the past and todo is incomplete', () => {
+      const overdueTodo = { ...mockTodo, dueDate: daysFromNow(-1), completed: 0 };
+      const { container } = render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(container.querySelector('.todo-card')).toHaveClass('overdue');
+    });
+
+    it('should not apply overdue class when a past-due todo is completed', () => {
+      const completedPastTodo = { ...mockTodo, dueDate: daysFromNow(-1), completed: 1 };
+      const { container } = render(<TodoCard todo={completedPastTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(container.querySelector('.todo-card')).not.toHaveClass('overdue');
+    });
+
+    it('should not apply overdue class when due date is today', () => {
+      const dueTodayTodo = { ...mockTodo, dueDate: daysFromNow(0), completed: 0 };
+      const { container } = render(<TodoCard todo={dueTodayTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(container.querySelector('.todo-card')).not.toHaveClass('overdue');
+    });
+
+    it('should not apply overdue class when there is no due date', () => {
+      const noDueDateTodo = { ...mockTodo, dueDate: null, completed: 0 };
+      const { container } = render(<TodoCard todo={noDueDateTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(container.querySelector('.todo-card')).not.toHaveClass('overdue');
+    });
+
+    it('should remove the overdue class after re-rendering with the todo marked complete', () => {
+      const overdueTodo = { ...mockTodo, dueDate: daysFromNow(-1), completed: 0 };
+      const { container, rerender } = render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      expect(container.querySelector('.todo-card')).toHaveClass('overdue');
+
+      rerender(<TodoCard todo={{ ...overdueTodo, completed: 1 }} {...mockHandlers} isLoading={false} />);
+      expect(container.querySelector('.todo-card')).not.toHaveClass('overdue');
+    });
+
+    it('should reapply the overdue class after re-rendering back to incomplete with the due date still past', () => {
+      const overdueTodo = { ...mockTodo, dueDate: daysFromNow(-1), completed: 1 };
+      const { container, rerender } = render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      expect(container.querySelector('.todo-card')).not.toHaveClass('overdue');
+
+      rerender(<TodoCard todo={{ ...overdueTodo, completed: 0 }} {...mockHandlers} isLoading={false} />);
+      expect(container.querySelector('.todo-card')).toHaveClass('overdue');
+    });
+
+    it('should remove the overdue class after re-rendering with the due date moved to the future', () => {
+      const overdueTodo = { ...mockTodo, dueDate: daysFromNow(-1), completed: 0 };
+      const { container, rerender } = render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+      expect(container.querySelector('.todo-card')).toHaveClass('overdue');
+
+      rerender(<TodoCard todo={{ ...overdueTodo, dueDate: daysFromNow(5) }} {...mockHandlers} isLoading={false} />);
+      expect(container.querySelector('.todo-card')).not.toHaveClass('overdue');
+    });
+  });
 });

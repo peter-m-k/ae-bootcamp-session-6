@@ -18,7 +18,7 @@
 
 **Purpose**: Prepare the new utility module location
 
-- [ ] T001 [P] Create `packages/frontend/src/utils/` and `packages/frontend/src/utils/__tests__/` directories for the new overdue-status utility (per plan.md Project Structure)
+- [X] T001 [P] Create `packages/frontend/src/utils/` and `packages/frontend/src/utils/__tests__/` directories for the new overdue-status utility (per plan.md Project Structure)
 
 ---
 
@@ -28,9 +28,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 [P] Write failing unit tests for `isOverdue(dueDate, completed, today)` in `packages/frontend/src/utils/__tests__/overdue.test.js`, covering: past due date + incomplete → `true`; due today → `false`; future due date → `false`; no due date → `false`; past due date + completed → `false` (per data-model.md computation rule)
-- [ ] T003 Implement `isOverdue(dueDate, completed, today)` in `packages/frontend/src/utils/overdue.js` using day-granularity date comparison (per research.md Decision 2) to make T002 pass
-- [ ] T004 [P] Add a `.todo-card.overdue` rule in `packages/frontend/src/App.css` that applies the existing `--danger-color` token from `packages/frontend/src/styles/theme.css` (per research.md Decision 3), so the color is correct in both light and dark themes
+- [X] T002 [P] Write failing unit tests for `isOverdue(dueDate, completed, today)` in `packages/frontend/src/utils/__tests__/overdue.test.js`, covering: past due date + incomplete → `true`; due today → `false`; future due date → `false`; no due date → `false`; past due date + completed → `false` (per data-model.md computation rule)
+- [X] T003 Implement `isOverdue(dueDate, completed, today)` in `packages/frontend/src/utils/overdue.js` using day-granularity date comparison (per research.md Decision 2) to make T002 pass
+- [X] T004 [P] Add a `.todo-card.overdue` rule in `packages/frontend/src/App.css` that applies the existing `--danger-color` token from `packages/frontend/src/styles/theme.css` (per research.md Decision 3), so the color is correct in both light and dark themes
 
 **Checkpoint**: `isOverdue` utility and its styling are ready — User Stories 1 and 2 can now build on them
 
@@ -44,11 +44,11 @@
 
 ### Tests for User Story 1
 
-- [ ] T005 [P] [US1] Add rendering tests to `packages/frontend/src/components/__tests__/TodoCard.test.js`: overdue todo (past due date, incomplete) has the `overdue` class; completed todo with a past due date does not; todo due today does not; todo with no due date does not (per spec.md Acceptance Scenarios 1-4)
+- [X] T005 [P] [US1] Add rendering tests to `packages/frontend/src/components/__tests__/TodoCard.test.js`: overdue todo (past due date, incomplete) has the `overdue` class; completed todo with a past due date does not; todo due today does not; todo with no due date does not (per spec.md Acceptance Scenarios 1-4)
 
 ### Implementation for User Story 1
 
-- [ ] T006 [US1] In `packages/frontend/src/components/TodoCard.js`, import `isOverdue` from `../utils/overdue` and conditionally append the `overdue` class to the todo card's root `className` based on `todo.dueDate`, `todo.completed`, and the current date (depends on T003, T005)
+- [X] T006 [US1] In `packages/frontend/src/components/TodoCard.js`, import `isOverdue` from `../utils/overdue` and conditionally append the `overdue` class to the todo card's root `className` based on `todo.dueDate`, `todo.completed`, and the current date (depends on T003, T005)
 
 **Checkpoint**: User Story 1 is fully functional and independently testable — overdue todos are visually distinguished on load
 
@@ -62,11 +62,11 @@
 
 ### Tests for User Story 2
 
-- [ ] T007 [P] [US2] Add re-render tests to `packages/frontend/src/components/__tests__/TodoCard.test.js`: re-rendering with `completed` toggled true removes the `overdue` class; toggling back to false (due date still past) reapplies it; re-rendering with a future `dueDate` removes it (per spec.md Acceptance Scenarios 1-3 for User Story 2)
+- [X] T007 [P] [US2] Add re-render tests to `packages/frontend/src/components/__tests__/TodoCard.test.js`: re-rendering with `completed` toggled true removes the `overdue` class; toggling back to false (due date still past) reapplies it; re-rendering with a future `dueDate` removes it (per spec.md Acceptance Scenarios 1-3 for User Story 2)
 
 ### Implementation for User Story 2
 
-- [ ] T008 [US2] Confirm `TodoCard` and `packages/frontend/src/components/TodoList.js` re-render with the updated `todo` prop after every toggle/edit action (no `React.memo` or other memoization blocks it), so the `overdue` class recomputes automatically; adjust only if T007 reveals a stale render (depends on T006, T007)
+- [X] T008 [US2] Confirm `TodoCard` and `packages/frontend/src/components/TodoList.js` re-render with the updated `todo` prop after every toggle/edit action (no `React.memo` or other memoization blocks it), so the `overdue` class recomputes automatically; adjust only if T007 reveals a stale render (depends on T006, T007)
 
 **Checkpoint**: User Stories 1 and 2 both work independently — the indicator is correct on load and stays correct after edits
 
@@ -76,9 +76,9 @@
 
 **Purpose**: Verify constitution compliance and finalize the change
 
-- [ ] T009 [P] Run `npm test --workspace=packages/frontend -- --coverage` and confirm 80%+ coverage is maintained (constitution Principle II)
-- [ ] T010 Execute the manual validation steps in `specs/001-overdue-todos/quickstart.md`
-- [ ] T011 [P] Self-review all changed files against the Code Review Checklist in `docs/coding-guidelines.md` before opening a pull request
+- [X] T009 [P] Run `npm test --workspace=packages/frontend -- --coverage` and confirm 80%+ coverage is maintained (constitution Principle II)
+- [X] T010 Execute the manual validation steps in `specs/001-overdue-todos/quickstart.md`
+- [X] T011 [P] Self-review all changed files against the Code Review Checklist in `docs/coding-guidelines.md` before opening a pull request
 
 ---
 
