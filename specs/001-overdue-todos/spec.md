@@ -8,6 +8,12 @@
 
 **Input**: User description: "Support for Overdue Todo Items - Users need a clear, visual way to identify which todos have not been completed by their due date, so they can prioritize work and quickly spot overdue items without manually comparing dates."
 
+## Clarifications
+
+### Session 2026-08-18
+
+- Q: How should the overdue indicator communicate status so it doesn't rely on color alone? → A: Color change only (e.g., red text/border on the todo card)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Spot overdue todos at a glance (Priority: P1)
@@ -16,7 +22,7 @@ As a todo application user, I want overdue todos to be visually distinguished in
 
 **Why this priority**: This is the core value of the feature — without a visual indicator, users gain no benefit. It delivers a complete, usable improvement on its own.
 
-**Independent Test**: Can be fully tested by creating a todo with a due date in the past and leaving it incomplete, then verifying the todo list displays a clear overdue indicator (e.g., label, icon, or color) on that item, and that other todos are unaffected.
+**Independent Test**: Can be fully tested by creating a todo with a due date in the past and leaving it incomplete, then verifying the todo list displays the overdue color treatment on that item, and that other todos are unaffected.
 
 **Acceptance Scenarios**:
 
@@ -61,8 +67,9 @@ As a todo application user, I want a todo's overdue indicator to update immediat
 - **FR-004**: System MUST NOT treat a todo due on the current date as overdue.
 - **FR-005**: System MUST re-evaluate a todo's overdue status whenever the todo list is displayed, and after any create, update, complete/incomplete toggle, or edit action.
 - **FR-006**: System MUST NOT alter the todo list's sort order based on overdue status; existing ordering (creation date, newest first) MUST be preserved.
-- **FR-007**: The overdue indicator MUST be visually distinguishable in both light and dark mode themes.
-- **FR-008**: Users MUST be able to recognize overdue todos without manually reading and comparing the due date to today's date.
+- **FR-007**: System MUST indicate overdue status via a distinct color treatment (e.g., red border and/or text) applied to the todo card, without adding a text label or icon.
+- **FR-008**: The overdue color treatment MUST be visually distinguishable in both light and dark mode themes, using the existing danger color from the UI palette.
+- **FR-009**: Users MUST be able to recognize overdue todos by color alone, without manually reading and comparing the due date to today's date.
 
 ### Key Entities
 
@@ -82,5 +89,6 @@ As a todo application user, I want a todo's overdue indicator to update immediat
 - Due dates are date-only (no time-of-day component); a todo becomes overdue starting the calendar day after its due date, consistent with the existing due date field defined in functional requirements.
 - Overdue status is a derived/computed state evaluated at display time using the current date; it is not persisted as a separate stored field.
 - This feature does not introduce filtering, grouping, or reordering of the todo list, consistent with the app's existing "no filtering/sorting" scope constraint — it only adds a visual indicator.
-- The existing UI color palette's semantic "danger" color (used for delete/destructive actions) may be reused or paired with a label/icon to visually distinguish overdue todos, consistent with existing UI guidelines.
+- The existing UI color palette's semantic "danger" color (used for delete/destructive actions) is reused as the sole visual treatment for overdue todos, per clarification — no text label or icon is added.
+- Because the indicator relies on color alone, users who cannot perceive the color difference (e.g., color blindness) may not be able to distinguish overdue todos; this trade-off was explicitly accepted during clarification.
 - No notifications, reminders, or alerts are introduced by this feature; it is a passive visual indicator within the existing list view only.
