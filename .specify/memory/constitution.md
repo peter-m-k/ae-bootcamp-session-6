@@ -1,50 +1,114 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: (none, initial) → 1.0.0
+- Modified principles: N/A (initial ratification)
+- Added sections:
+  - Core Principles: I. Code Quality & Consistency, II. Test-First Reliability (NON-NEGOTIABLE),
+    III. Simplicity & Minimal Scope (YAGNI), IV. UI Consistency & Accessibility,
+    V. Monorepo Structure & Separation of Concerns
+  - Technology Stack Constraints
+  - Development Workflow & Quality Gates
+  - Governance
+- Removed sections: N/A (initial ratification)
+- Templates requiring updates:
+  - .specify/templates/plan-template.md ⚠ pending manual review (not modified by this command)
+  - .specify/templates/spec-template.md ⚠ pending manual review (not modified by this command)
+  - .specify/templates/tasks-template.md ⚠ pending manual review (not modified by this command)
+- Follow-up TODOs: none
+-->
+
+# Todo App Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Code Quality & Consistency
+Code MUST follow the conventions in `docs/coding-guidelines.md`: 2-space indentation,
+`camelCase` for variables/functions, `PascalCase` for React components and classes,
+`UPPER_SNAKE_CASE` for constants, and the defined import order (external libraries,
+internal modules, styles). Code MUST apply DRY, KISS, and SOLID principles, with each
+module, component, or function limited to a single responsibility. Code MUST NOT be
+merged with unused variables, undefined references, or leftover `console.log`
+statements. Errors from operations that can fail MUST be handled explicitly with
+actionable feedback, not silently swallowed.
+Rationale: shared conventions reduce review overhead and keep the codebase approachable
+for bootcamp participants of varying experience levels.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Test-First Reliability (NON-NEGOTIABLE)
+Every new feature or bug fix MUST include unit and/or integration tests before it is
+considered done, per `docs/testing-guidelines.md`. The test suite MUST maintain 80%+
+code coverage across `packages/frontend` and `packages/backend`, with 100% coverage on
+critical user workflows (create, view, update, complete, delete todo). Tests MUST verify
+observable behavior rather than implementation details, follow the Arrange-Act-Assert
+structure, and remain isolated (no shared state, external dependencies mocked). All
+tests MUST pass locally via `npm test` before a pull request is opened.
+Rationale: reliable tests are the primary safety net for a fast-moving, multi-session
+bootcamp codebase where regressions must be caught early.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Simplicity & Minimal Scope (YAGNI)
+The application MUST remain the single-user todo app defined in
+`docs/functional-requirements.md`: create, view, update, complete/incomplete, and delete
+todos with a title and optional due date. Features explicitly out of scope (authentication,
+multi-user support, priorities/categories, recurring todos, reminders, undo/redo, bulk
+operations, search/filtering, mobile-specific optimization) MUST NOT be implemented without
+first updating the functional requirements via a spec change. Implementations MUST prefer
+the simplest solution that satisfies a stated requirement over speculative abstraction or
+premature optimization.
+Rationale: keeps the codebase focused on its bootcamp teaching goals and prevents scope
+creep that would obscure the core exercises.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. UI Consistency & Accessibility
+All UI work MUST use the design tokens and component patterns defined in
+`docs/ui-guidelines.md` (color palette, 8px spacing scale, typography scale, Material
+Design-inspired components) and MUST support both light and dark modes. Interactive
+elements MUST be keyboard accessible with visible focus indicators, and color contrast
+MUST meet WCAG AA. Destructive actions (e.g., deleting a todo) MUST require explicit
+user confirmation before executing.
+Rationale: a consistent, accessible interface is a stated functional requirement and
+avoids ad hoc styling decisions across contributions.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Monorepo Structure & Separation of Concerns
+The project MUST remain organized as an npm-workspaces monorepo with `packages/frontend`
+(React) and `packages/backend` (Express), each independently testable per
+`docs/project-overview.md`. Backend code MUST be layered (routes/controllers/services),
+and frontend code MUST be organized by components and services, each colocated with its
+own `__tests__/` directory per `docs/coding-guidelines.md`. Packages MUST communicate
+only through the documented backend API contract; direct cross-package imports of
+internal modules are prohibited.
+Rationale: clear boundaries between frontend and backend keep the two deployable units
+independently understandable and testable.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technology Stack Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+The backend MUST run on Node.js v16+ with Express.js, and the frontend MUST be built with
+React; both MUST use Jest as the test runner. Persistence MUST go through the existing
+backend API — no direct database access from the frontend and no schema changes beyond
+basic todo storage. The application MUST remain single-user, with no per-user data
+isolation logic introduced.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow & Quality Gates
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Work MUST proceed on feature branches (e.g., `feature/<name>`) with pull requests
+required before merging to `main`. Before opening a pull request, contributors MUST:
+run `npm test` across affected packages and confirm all tests pass, run lint checks and
+resolve all errors/warnings, and self-review against the Code Review Checklist in
+`docs/coding-guidelines.md`. Commits MUST be atomic and carry descriptive messages
+explaining the "why" of the change. Reviewers MUST verify compliance with this
+constitution's principles before approving a merge.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes ad hoc conventions and prior undocumented practices. The
+files under `docs/` (`coding-guidelines.md`, `testing-guidelines.md`, `ui-guidelines.md`,
+`functional-requirements.md`, `project-overview.md`) provide detailed, runtime guidance
+and MUST be read as an elaboration of, and subordinate to, the principles above; where
+they conflict, this constitution prevails.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Amendments MUST update this file directly and include a Sync Impact Report documenting
+the version change, modified/added/removed sections, and any deferred follow-ups.
+Versioning follows semantic versioning: MAJOR for backward-incompatible principle removals
+or redefinitions, MINOR for new principles or materially expanded guidance, PATCH for
+wording clarifications and non-semantic fixes. All pull requests MUST be reviewed for
+compliance with these principles; any deviation MUST be explicitly justified in the PR
+description or rejected.
+
+**Version**: 1.0.0 | **Ratified**: 2026-08-18 | **Last Amended**: 2026-08-18
